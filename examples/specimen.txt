@@ -1,0 +1,5 @@
+This is the specimen file for the netcat lab.
+It has no secrets in it. It exists to be copied,
+sent down a socket, and hashed at both ends so you
+can prove the bytes that arrived are the bytes
+that left. If the hashes match, the pipe was honest.

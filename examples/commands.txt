@@ -1,0 +1,71 @@
+Netcat commands — the everyday set from
+"Netcat for Mere Mortals"
+====================================================================
+
+Every output quoted in the guide was captured
+from OpenBSD netcat (Debian patchlevel
+1.226-1ubuntu2) on the build machine, run
+against the specimen lab in this directory.
+All targets are 127.0.0.1 or a Unix socket in
+the lab directory — the only kind of target
+this guide uses.
+
+Start the lab fixture first (its own terminal):
+    python3 examples/lab_server.py
+It listens on tcp/45002, greets, and echoes.
+tcp/45999 and udp/45998 are deliberately
+left closed.
+
+
+TALKING TO A SERVICE
+--------------------
+    nc -v 127.0.0.1 45002       connect and chat by hand
+    nc -v -N 127.0.0.1 45002    -N: say goodbye when input ends
+    printf "GET / HTTP/1.0\r\n\r\n" | nc -N -w 3 127.0.0.1 45003
+                                HTTP by hand (serve examples/ with
+                                python3 -m http.server 45003 first)
+
+
+LISTENING
+---------
+    nc -l 127.0.0.1 45001       one caller, then it exits
+    nc -k -l 127.0.0.1 45001    keep listening, callers in turn
+    nc 127.0.0.1 45001          the other end of either
+
+
+CHECKING PORTS
+--------------
+    nc -zv 127.0.0.1 45002      exit 0: a program accepted
+    nc -zv 127.0.0.1 45999      exit 1: Connection refused
+    nc -zv -w 2 HOST PORT       silence needs -w, always
+
+
+MOVING FILES
+------------
+    nc -l 127.0.0.1 45001 > received.txt        receiver first
+    nc -N 127.0.0.1 45001 < payload.txt         then the sender
+    nc -l 127.0.0.1 45001 < payload.txt         serving side (pull)
+    nc -N -w 3 127.0.0.1 45001 > pulled.txt     the pull itself
+    sha256sum payload.txt received.txt          prove it, both ends
+
+
+PIPING
+------
+    { uname -a; echo; df -h /; } | nc -N 127.0.0.1 45001
+                                a report down a socket
+
+
+UDP
+---
+    nc -u -l 127.0.0.1 45004                    the listening ear
+    printf "hello\n" | nc -u -N -w 1 127.0.0.1 45004
+    nc -zuv -w 2 127.0.0.1 45004               the check that shrugs
+
+
+UNIX SOCKETS
+------------
+    nc -l -U lab.sock           listen on a file path
+    nc -N -U lab.sock           connect to it
+    nc -zvU lab.sock            the check, socket edition
+    rm lab.sock                 the file outlives the listener;
+                                cleaning it up is yours

@@ -1,6 +1,7 @@
 site_name: Netcat for Mere Mortals
 site_description: Plain-language netcat. The socket in plain words, talking to a service by hand, HTTP typed out yourself, listening and chatting, checking ports by exit code, moving one file and proving it arrived, UDP with its shrug, and the timeouts that end the hang, all practised on a loopback lab.
 site_url: https://paulsullivan33-dev.github.io/netcat-for-mere-mortals/
+copyright: 'Part of <a href="https://paulsullivan33-dev.github.io/mere-mortals/">For Mere Mortals</a> · Text <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, code MIT'
 
 # Guides live at the repo root (nice for GitHub browsing).
 # The deploy workflow copies them into docs/ before building.
